@@ -463,7 +463,7 @@ const App = () => {
 
         try {
             // Use local server URL, or environment variable if available
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/submit-form';
+            const apiUrl = import.meta.env.VITE_API_URL || '/api/submit-form';
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
