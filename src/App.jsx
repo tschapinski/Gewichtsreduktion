@@ -798,17 +798,7 @@ const App = () => {
                                                 value={formData.email}
                                                 onChange={e => setFormData({ ...formData, email: e.target.value })}
                                             />
-                                            {formData.email && (
-                                                <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                                                    {isValidEmail(formData.email) ? (
-                                                        <svg className="w-6 h-6 text-success animate-bounce-in" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
-                                                        </svg>
-                                                    ) : (
-                                                        <span className="text-error text-sm">✗</span>
-                                                    )}
-                                                </div>
-                                            )}
+                                            {/* Removed valid/invalid icon as per request */}
                                         </div>
                                         {formData.email && !isValidEmail(formData.email) && (
                                             <p className="text-error text-xs mt-2 ml-1">Bitte gib eine gültige E-Mail-Adresse ein</p>
@@ -822,16 +812,22 @@ const App = () => {
                                                 type="checkbox"
                                                 required
                                                 id="consent"
-                                                className="peer sr-only"
+                                                className="peer opacity-0 absolute h-0 w-0"
                                                 checked={formData.consent}
                                                 onChange={e => setFormData({ ...formData, consent: e.target.checked })}
                                             />
                                             <label
                                                 htmlFor="consent"
-                                                className="w-6 h-6 border-2 border-stone-300 rounded cursor-pointer flex items-center justify-center transition-all peer-checked:border-vansol-green hover:border-vansol-green bg-white"
+                                                className="w-6 h-6 bg-white border-2 border-stone-300 rounded cursor-pointer flex items-center justify-center transition-all duration-200 ease-in-out peer-checked:border-vansol-green hover:border-vansol-green"
                                             >
-                                                <svg className="w-4 h-4 text-vansol-green opacity-0 peer-checked:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
+                                                <svg
+                                                    className="w-4 h-4 text-vansol-green opacity-0 peer-checked:opacity-100 transition-opacity duration-200 transform scale-90 peer-checked:scale-100"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                    strokeWidth="3"
+                                                >
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"></path>
                                                 </svg>
                                             </label>
                                         </div>
@@ -840,7 +836,7 @@ const App = () => {
                                             und bin einverstanden, dass ich <strong>Tipps zur Hypnose und
                                                 Gewichtsreduktion von Katrin van Sol</strong> erhalte.
                                             Abmeldung jederzeit möglich gemäß{' '}
-                                            <a href="#datenschutz" className="text-vansol-green underline hover:text-vansol-dark">Datenschutzerklärung</a>.
+                                            <a href="https://www.vansol.de/rights/datenschutz" target="_blank" rel="noopener noreferrer" className="text-vansol-green underline hover:text-vansol-dark">Datenschutzerklärung</a>.
                                         </label>
                                     </div>
 
