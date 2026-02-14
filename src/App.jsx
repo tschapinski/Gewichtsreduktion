@@ -11,43 +11,64 @@ const useGSAP = (callback, dependencies = []) => {
 const questionsData = [
     {
         id: 1,
+        type: 'card',
+        category: "Einstieg",
+        question: "Bevor wir anfangen: Was tut dir im Alltag besonders gut?",
+        options: [
+            { id: 'A', text: "Zeit für mich alleine (Ruhe) 🧘‍♀️" },
+            { id: 'B', text: "Bewegung an der frischen Luft 🌲" },
+            { id: 'C', text: "Gesellige Runden mit Freunden ☕" },
+            { id: 'D', text: "Kreativ sein oder Neues lernen 🎨" }
+        ],
+    },
+    {
+        id: 2,
         type: 'slider',
+        category: "Erfahrung",
         question: "Wie viele Diäten hast du in deinem Leben schon ausprobiert?",
         config: {
             min: 0,
-            max: 2,
+            max: 4,
             step: 1,
             labels: [
-                { val: 0, text: "Keine / 1-2", icon: "😊" },
-                { val: 1, text: "3 bis 5", icon: "😐" },
-                { val: 2, text: "Unzählige", icon: "😰" }
+                { val: 0, text: "Keine", icon: "😎" },
+                { val: 1, text: "1-2", icon: "😊" },
+                { val: 2, text: "3 bis 5", icon: "😐" },
+                { val: 3, text: "6 bis 10", icon: "😮" },
+                { val: 4, text: "Unzählige", icon: "😰" }
             ]
         },
     },
     {
-        id: 2,
+        id: 3,
         type: 'card',
+        category: "Dein Ziel",
         question: "Was ist dein Zielgewicht, das du verlieren möchtest?",
         options: [
+            { id: 'D', text: "Gewicht halten" },
             { id: 'A', text: "5 bis 10 kg (Die \"Wohlfühl-Kilos\")" },
             { id: 'B', text: "10 bis 20 kg" },
             { id: 'C', text: "Mehr als 20 kg" }
         ],
     },
     {
-        id: 3,
+        id: 4,
         type: 'card',
-        question: "Wann greifst du am häufigsten zu Essen, obwohl du keinen körperlichen Hunger hast?",
+        category: "Emotionales Essen",
+        question: "Wann greifst du am häufigsten zu Essen, obwohl du keinen körperlichen Hunger hast? (Mehrfachauswahl möglich)",
+        multi: true,
         options: [
             { id: 'A', text: "Bei Stress oder Überforderung im Alltag" },
             { id: 'B', text: "Abends auf der Couch aus Langeweile oder Gewohnheit" },
             { id: 'C', text: "Wenn ich traurig bin, mich einsam fühle oder Belohnung brauche" },
-            { id: 'D', text: "Ich esse eigentlich immer gerne und viel (große Portionen)" }
+            { id: 'D', text: "Ich esse eigentlich immer gerne und viel (große Portionen)" },
+            { id: 'E', text: "Ich esse oft unbewusst nebenbei (z.B. bei der Arbeit/TV)" }
         ],
     },
     {
-        id: 4,
+        id: 5,
         type: 'slider',
+        category: "Sättigung",
         question: "Wie würdest du dein Sättigungsgefühl beschreiben?",
         config: {
             min: 1,
@@ -62,28 +83,35 @@ const questionsData = [
         },
     },
     {
-        id: 5,
+        id: 6,
         type: 'card',
-        question: "Welche Aussage trifft am ehesten auf deine Beziehung zu Süßigkeiten/Snacks zu?",
+        category: "Heisshunger",
+        question: "Welche Aussage trifft am ehesten auf deine Beziehung zu Süßigkeiten/Snacks zu? (Mehrfachauswahl möglich)",
+        multi: true,
         options: [
             { id: 'A', text: "Ich brauche sie täglich als \"Nervennahrung\"" },
             { id: 'B', text: "Ich kann schwer aufhören (Kontrollverlust)" },
-            { id: 'C', text: "Süßes ist gar nicht mein Hauptproblem" }
-        ],
-    },
-    {
-        id: 6,
-        type: 'card',
-        question: "Wie behandelst du deinen Körper aktuell? (Ehrlich sein!)",
-        options: [
-            { id: 'A', text: "Ich achte gut auf ihn, aber das Gewicht geht nicht runter" },
-            { id: 'B', text: "Manchmal wie einen \"Mülleimer\" – Reste essen etc." },
-            { id: 'C', text: "Wie einen \"müden Arbeiter\" – keine Pausen" }
+            { id: 'C', text: "Süßes ist gar nicht mein Hauptproblem" },
+            { id: 'D', text: "Ich esse sie oft als Belohnung am Ende des Tages" },
+            { id: 'E', text: "Ich kann kaum an Süßigkeiten vorbeigehen, wenn sie da sind" }
         ],
     },
     {
         id: 7,
         type: 'card',
+        category: "Selbstbild",
+        question: "Wie behandelst du deinen Körper aktuell? (Ehrlich sein!)",
+        options: [
+            { id: 'A', text: "Ich achte gut auf ihn, aber das Gewicht geht nicht runter" },
+            { id: 'B', text: "Manchmal wie einen \"Mülleimer\" – Reste essen etc." },
+            { id: 'C', text: "Wie einen \"müden Arbeiter\" – keine Pausen" },
+            { id: 'D', text: "Ich bin sehr kritisch und fühle mich oft unwohl in meiner Haut" }
+        ],
+    },
+    {
+        id: 8,
+        type: 'card',
+        category: "Ursache",
         question: "Was glaubst du, ist der Hauptgrund für dein Übergewicht?",
         options: [
             { id: 'A', text: "Meine Gene / Stoffwechsel / Alter" },
@@ -92,8 +120,9 @@ const questionsData = [
         ],
     },
     {
-        id: 8,
+        id: 9,
         type: 'slider',
+        category: "Mindset",
         question: "Glaubst du, dass dein Unterbewusstsein stärker ist als dein bewusster Wille?",
         config: {
             min: 0,
@@ -108,8 +137,9 @@ const questionsData = [
         },
     },
     {
-        id: 9,
+        id: 10,
         type: 'card',
+        category: "Motivation",
         question: "Bist du bereit, dich auf eine tiefe Entspannung einzulassen?",
         options: [
             { id: 'A', text: "Ja, ich bin offen für Neues (Hypnose)" },
@@ -118,8 +148,9 @@ const questionsData = [
         ],
     },
     {
-        id: 10,
+        id: 11,
         type: 'card',
+        category: "Vision",
         question: "Stell dir vor, du hättest dein Ziel bereits erreicht. Wie fühlst du dich?",
         options: [
             { id: 'A', text: "Frei und erleichtert" },
@@ -133,6 +164,7 @@ const questionsData = [
 
 const Slider = ({ config, value, onChange }) => {
     const [localValue, setLocalValue] = useState(value || Math.floor((config.max - config.min) / 2) + config.min);
+    const [isDragging, setIsDragging] = useState(false);
     const sliderRef = useRef(null);
 
     useEffect(() => onChange(localValue), []); // Init value
@@ -157,7 +189,7 @@ const Slider = ({ config, value, onChange }) => {
 
     return (
         <div className="w-full py-8 px-4">
-            <div className="flex justify-center mb-12 text-center h-16 items-center flex-col animate-pulse-slow">
+            <div className={`flex justify-center mb-12 text-center h-16 items-center flex-col transition-transform duration-300 ${isDragging ? 'scale-110' : ''}`}>
                 <span className="text-4xl mb-2 block">{labelData.icon || ""}</span>
                 <span className="text-xl font-serif text-vansol-dark">{labelData.text}</span>
                 {config.showValue && <span className="text-sm text-vansol-green mt-1 font-bold">{localValue} / {config.max}</span>}
@@ -177,11 +209,16 @@ const Slider = ({ config, value, onChange }) => {
                     step={config.step}
                     value={localValue}
                     onChange={handleChange}
+                    onMouseDown={() => setIsDragging(true)}
+                    onTouchStart={() => setIsDragging(true)}
+                    onMouseUp={() => setIsDragging(false)}
+                    onTouchEnd={() => setIsDragging(false)}
+                    onBlur={() => setIsDragging(false)}
                     className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer z-10"
                 />
                 {/* Visual Thumb representation for better styling control (simple version mapped to native input above) */}
                 <div
-                    className="absolute top-1/2 -mt-4 w-8 h-8 bg-white border-2 border-vansol-dark rounded-full shadow-lg pointer-events-none transition-all duration-75 flex items-center justify-center transform hover:scale-110"
+                    className={`absolute top-1/2 -mt-4 w-8 h-8 bg-white border-2 border-vansol-dark rounded-full shadow-lg pointer-events-none transition-all duration-75 flex items-center justify-center transform ${isDragging ? 'scale-125' : 'hover:scale-110'}`}
                     style={{ left: `calc(${((localValue - config.min) / (config.max - config.min)) * 100}% - 16px)` }}
                 >
                     <div className="w-2 h-2 bg-vansol-dark rounded-full"></div>
@@ -197,54 +234,25 @@ const Slider = ({ config, value, onChange }) => {
 };
 
 const Card = ({ selected, onClick, children }) => {
-    const cardRef = useRef(null);
-
-    const handleEnter = () => {
-        gsap.to(cardRef.current, { y: -4, boxShadow: "0 10px 25px -5px rgba(0,0,0,0.1)", duration: 0.2 });
-    };
-    const handleLeave = () => {
-        if (!selected) gsap.to(cardRef.current, { y: 0, boxShadow: "none", duration: 0.2 });
-    };
-
-    useEffect(() => {
-        if (selected) {
-            gsap.to(cardRef.current, {
-                scale: 1.02,
-                borderColor: "#787d78",
-                backgroundColor: "#ffffff",
-                duration: 0.3
-            });
-        } else {
-            gsap.to(cardRef.current, {
-                scale: 1,
-                borderColor: "#e3e3e3",
-                backgroundColor: "#ffffff",
-                duration: 0.3
-            });
-        }
-    }, [selected]);
-
     return (
-        <div
-            ref={cardRef}
+        <button
             onClick={onClick}
-            onMouseEnter={handleEnter}
-            onMouseLeave={handleLeave}
             className={`
-                w-full p-6 mb-4 cursor-pointer border rounded-sm relative overflow-hidden
-                ${selected ? 'shadow-md ring-1 ring-vansol-green ring-opacity-50' : 'border-vansol-grey'}
+                w-full text-left bg-white p-6 rounded-xl ios-shadow border-2 transition-all duration-200 group flex items-center justify-between
+                ${selected ? 'border-vansol-green' : 'border-transparent hover:border-vansol-green/30 active:scale-[0.98]'}
             `}
         >
-            <div className="flex items-center relative z-10">
+            <span className="text-lg font-medium leading-tight pr-4 text-vansol-text">{children}</span>
+            <div className={`
+                w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors
+                ${selected ? 'border-vansol-green' : 'border-vansol-beige'}
+            `}>
                 <div className={`
-                    w-6 h-6 rounded-full border flex items-center justify-center mr-4 flex-shrink-0 transition-colors duration-300
-                    ${selected ? 'border-vansol-green bg-vansol-green' : 'border-vansol-dark'}
-                `}>
-                    {selected && <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>}
-                </div>
-                <span className="text-lg leading-relaxed font-sans">{children}</span>
+                    w-3 h-3 rounded-full bg-vansol-green transition-opacity
+                    ${selected ? 'opacity-100' : 'opacity-0'}
+                `}></div>
             </div>
-        </div>
+        </button>
     );
 };
 
@@ -302,6 +310,60 @@ const GaugeAnimation = ({ onComplete }) => {
     );
 };
 
+// --- New UI Components ---
+
+const FeatureIcons = () => (
+    <div className="w-full max-w-md grid grid-cols-3 gap-4 mb-8 mx-auto">
+        <div className="flex flex-col items-center text-center">
+            <div className="w-10 h-10 rounded-full bg-vansol-green/10 flex items-center justify-center mb-2">
+                <span className="material-icons text-vansol-green text-sm">spa</span>
+            </div>
+            <span className="text-[10px] uppercase tracking-tighter text-vansol-green/70">Ganzheitlich</span>
+        </div>
+        <div className="flex flex-col items-center text-center">
+            <div className="w-10 h-10 rounded-full bg-vansol-green/10 flex items-center justify-center mb-2">
+                <span className="material-icons text-vansol-green text-sm">auto_graph</span>
+            </div>
+            <span className="text-[10px] uppercase tracking-tighter text-vansol-green/70">Analyse</span>
+        </div>
+        <div className="flex flex-col items-center text-center">
+            <div className="w-10 h-10 rounded-full bg-vansol-green/10 flex items-center justify-center mb-2">
+                <span className="material-icons text-vansol-green text-sm">biotech</span>
+            </div>
+            <span className="text-[10px] uppercase tracking-tighter text-vansol-green/70">Wissenschaft</span>
+        </div>
+    </div>
+);
+
+const QuizHeader = ({ step, onBack }) => (
+    <header className="pt-2 px-6 pb-4 flex items-center justify-between">
+        <button
+            onClick={onBack}
+            className={`w-10 h-10 flex items-center justify-center rounded-full bg-white/50 backdrop-blur-sm text-vansol-text hover:bg-white/80 transition-colors ${step <= 1 ? 'invisible' : ''}`}
+        >
+            <span className="material-icons text-xl">arrow_back_ios_new</span>
+        </button>
+        <div className="flex-1 px-8">
+            <div className="w-full h-1.5 bg-vansol-green/20 rounded-full overflow-hidden">
+                <div
+                    className="h-full bg-vansol-green rounded-full transition-all duration-500 ease-out"
+                    style={{ width: `${(step / 11) * 100}%` }}
+                ></div>
+            </div>
+            <p className="text-center text-[10px] uppercase tracking-widest mt-2 font-bold text-vansol-green/80">Schritt {step} von 11</p>
+        </div>
+        <div className="w-10"></div> {/* Spacer */}
+    </header>
+);
+
+const QuizFooter = () => (
+    <div className="mt-12 text-center px-4 opacity-70 hover:opacity-100 transition-opacity duration-500">
+        <div className="flex justify-center mb-4">
+            <img src="/Bilder/Vansol_logo_dark.svg" alt="Vansol" className="h-6 w-auto" />
+        </div>
+    </div>
+);
+
 // --- Main Logic & App ---
 
 const App = () => {
@@ -327,7 +389,7 @@ const App = () => {
         if (saved) {
             try {
                 const p = JSON.parse(saved);
-                if (p.step && p.step < 11) setStep(p.step);
+                if (p.step && p.step < 12) setStep(p.step);
                 if (p.answers) setAnswers(p.answers);
                 if (p.formData) setFormData(p.formData);
             } catch (e) { }
@@ -357,26 +419,35 @@ const App = () => {
 
     const handleAnswer = (val) => {
         const qId = step;
-        const newAnswers = { ...answers, [qId]: val };
+        const currentQ = questionsData.find(q => q.id === step);
+        let newAnswers = { ...answers };
+
+        if (currentQ.multi) {
+            // Multi-select logic
+            const currentSelected = newAnswers[qId] || [];
+            if (currentSelected.includes(val)) {
+                newAnswers[qId] = currentSelected.filter(id => id !== val);
+            } else {
+                newAnswers[qId] = [...currentSelected, val];
+            }
+        } else {
+            // Single-select logic
+            newAnswers[qId] = val;
+        }
+
         setAnswers(newAnswers);
 
-        // For sliders, we don't auto-advance instantly usually, but for this funnel flow request:
-        // If it's a card, auto-advance. If slider, user manually clicks "Next" or we auto-advance?
-        // Request said "Behalte Card-Auswahl bei (Auto-advance implied)".
-        // For Sliders, usually a "Next" button is better UX.
-        // Let's implement a "Weiter" button for Sliders, and Auto-advance for Cards.
-
-        const qType = questionsData.find(q => q.id === step)?.type;
-        if (qType === 'card') {
+        // Auto-advance only for single-select cards
+        if (currentQ.type === 'card' && !currentQ.multi) {
             setTimeout(() => {
-                if (step < 10) changeStep(step + 1);
+                if (step < 11) changeStep(step + 1);
                 else finishQuestions(newAnswers);
             }, 400);
         }
     };
 
     const handleNext = () => {
-        if (step < 10) changeStep(step + 1);
+        if (step < 11) changeStep(step + 1);
         else finishQuestions(answers);
     };
 
@@ -384,39 +455,48 @@ const App = () => {
         // Calculate Result
         let scores = { A: 0, B: 0, C: 0, D: 0 };
 
+        // Helper to check answer (handles single and multi)
+        const hasAnswer = (qId, val) => {
+            const ans = finalAnswers[qId];
+            if (Array.isArray(ans)) return ans.includes(val);
+            return ans === val;
+        };
+
         // Map Sliders
-        // Q1: 0, 1, 2
-        // Q4: 1-10
-        // Q8: 0-100
+        // Q2: 0, 1, 2, 3, 4
+        // Q5: 1-10
+        // Q9: 0-100
 
         // Existing logic + Slider Mapping
-        // Typ A (Emotional): 3C, 5A, 6B, 7C, Q4(4-7)
-        if (finalAnswers[3] === 'C') scores.A++;
-        if (finalAnswers[5] === 'A') scores.A++;
-        if (finalAnswers[6] === 'B') scores.A++;
-        if (finalAnswers[7] === 'C') scores.A++;
-        if (finalAnswers[4] >= 4 && finalAnswers[4] <= 7) scores.A++;
+        // Typ A (Emotional): 4C, 4E, 6A, 6D, 7B, 8C, Q5(4-7)
+        if (hasAnswer(4, 'C')) scores.A++;
+        if (hasAnswer(4, 'E')) scores.A++;
+        if (hasAnswer(6, 'A')) scores.A++;
+        if (hasAnswer(6, 'D')) scores.A++; // Reward/end of day -> Emotional/Habit
+        if (hasAnswer(7, 'B')) scores.A++;
+        if (hasAnswer(7, 'D')) scores.A++; // Critical self-image -> Emotional
+        if (hasAnswer(8, 'C')) scores.A++;
+        if (finalAnswers[5] >= 4 && finalAnswers[5] <= 7) scores.A++;
 
-        // Typ B (Gewohnheit): 3B, 4C(old), 6C, 7A
-        // Q4C old was "Teller leer". New Q4 doesn't have it. Let's ignore Q4 for B, or map Q1 low?
-        if (finalAnswers[3] === 'B') scores.B++;
-        if (finalAnswers[6] === 'C') scores.B++;
-        if (finalAnswers[7] === 'A') scores.B++;
-        if (finalAnswers[1] <= 1) scores.B++; // Low diets = naive/habit?
+        // Typ B (Gewohnheit): 4B, 4E, 6E, 7C, 8A
+        if (hasAnswer(4, 'B')) scores.B++;
+        if (hasAnswer(4, 'E')) scores.B++;
+        if (hasAnswer(6, 'E')) scores.B++; // Difficulty passing by -> Habit/Impulse
+        if (hasAnswer(7, 'C')) scores.B++;
+        if (hasAnswer(8, 'A')) scores.B++;
+        if (finalAnswers[2] <= 1) scores.B++;
 
-        // Typ C (Volumen): 2C, 3D, 4B(old), 5C
-        // Q4B old was "Spüre gar nicht". New Q4(8-10)
-        if (finalAnswers[2] === 'C') scores.C++;
-        if (finalAnswers[3] === 'D') scores.C++;
-        if (finalAnswers[5] === 'C') scores.C++;
-        if (finalAnswers[4] >= 8) scores.C++;
+        // Typ C (Volumen): 3C, 4D, 6C
+        if (hasAnswer(3, 'C')) scores.C++;
+        if (hasAnswer(4, 'D')) scores.C++;
+        if (hasAnswer(6, 'C')) scores.C++;
+        if (finalAnswers[5] >= 8) scores.C++;
 
-        // Typ D (Stress): 3A, 5A, 6C, 8A(old)
-        // Q8A old was "Ja absolut". New Q8(71-100)
-        if (finalAnswers[3] === 'A') scores.D++;
-        if (finalAnswers[5] === 'A') scores.D++;
-        if (finalAnswers[6] === 'C') scores.D++;
-        if (finalAnswers[8] >= 71) scores.D++;
+        // Typ D (Stress): 4A, 6A, 7C
+        if (hasAnswer(4, 'A')) scores.D++;
+        if (hasAnswer(6, 'A')) scores.D++;
+        if (hasAnswer(7, 'C')) scores.D++;
+        if (finalAnswers[9] >= 71) scores.D++;
 
         const typeKey = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
 
@@ -427,7 +507,7 @@ const App = () => {
             'D': { title: "Der Stress-Esser", alias: "Der Getriebene" }
         };
 
-        const rec = (finalAnswers[2] === 'B' || finalAnswers[2] === 'C') ? "Hypnotisches Magenband" : "Hypnotischer Magenballon";
+        const rec = (finalAnswers[3] === 'B' || finalAnswers[3] === 'C') ? "Hypnotisches Magenband" : "Hypnotischer Magenballon";
 
         setResult({
             type: resultTypes[typeKey].title,
@@ -437,7 +517,7 @@ const App = () => {
             gaugeScore: Math.random() * 100 // Visual dummy score for gauge later if needed
         });
 
-        changeStep(11); // Gauge Animation
+        changeStep(12); // Gauge Animation
     };
 
     const handleContactSubmit = async (e) => {
@@ -480,7 +560,7 @@ const App = () => {
                 setTimeout(() => {
                     localStorage.removeItem('vansol_funnel_state_v2');
                 }, 500);
-                changeStep(13); // Thank You
+                changeStep(14); // Thank You
             } else {
                 console.error("Error:", data);
                 // Simple error handling for user
@@ -490,7 +570,7 @@ const App = () => {
                     // Still proceed to thank you page for better UX? Or show error?
                     // Usually in funnels, if they exist, we just treat it as success or update them.
                     // For now, let's treat "Member Exists" as a kind of success to the user but log it.
-                    changeStep(13);
+                    changeStep(14);
                     return;
                 }
                 alert(msg + " (" + (data.detail || data.error) + ")");
@@ -512,7 +592,7 @@ const App = () => {
     // Keyboard Nav
     useEffect(() => {
         const handleKey = (e) => {
-            if (e.key === 'Enter' && step > 0 && step <= 10 && questionsData.find(q => q.id === step).type === 'slider') handleNext();
+            if (e.key === 'Enter' && step > 0 && step <= 11 && questionsData.find(q => q.id === step).type === 'slider') handleNext();
             if (e.key === 'Escape' && step > 1) changeStep(step - 1);
         };
         window.addEventListener('keydown', handleKey);
@@ -529,94 +609,123 @@ const App = () => {
         <div className="max-w-md md:max-w-2xl mx-auto min-h-screen relative flex flex-col font-sans">
 
             {/* Header / Progress - Not on Welcome/Thanks */}
-            {step > 0 && step < 13 && (
-                <div className="pt-8 px-6 pb-2 flex flex-col">
-                    <div className="flex justify-between items-center mb-4 opacity-60 text-xs tracking-widest uppercase">
-                        <button onClick={() => step > 1 && changeStep(step - 1)} className={`hover:text-vansol-dark ${step <= 1 ? 'invisible' : ''}`}>← Zurück</button>
-                        <span>Frage {step > 10 ? 10 : step} / 10</span>
-                    </div>
-                    {step <= 10 && (
-                        <div className="w-full bg-vansol-white h-1.5 rounded-full overflow-hidden">
-                            <div className="bg-gradient-to-r from-vansol-green to-stone-500 h-full transition-all duration-700 ease-in-out" style={{ width: `${(step / 10) * 100}%` }}></div>
-                        </div>
-                    )}
-                </div>
+            {step > 0 && step < 12 && (
+                <QuizHeader step={step} onBack={() => step > 1 && changeStep(step - 1)} />
             )}
 
             <div ref={containerRef} className="flex-grow flex flex-col p-6">
 
                 {/* 0. Welcome */}
                 {step === 0 && (
-                    <div className="text-center pt-8 animate-fade-in-up">
-                        <div className="mb-0 flex justify-center">
+                    <div className="pt-8 animate-fade-in-up flex flex-col items-center">
+                        <div className="text-center mb-6 max-w-md w-full px-4">
                             <img
-                                src="/Bilder/Katrin%20Notitzblock.jpg"
-                                alt="Katrin van Sol"
-                                className="w-48 h-48 sm:w-64 sm:h-64 object-cover rounded-full shadow-lg border-4 border-white"
+                                src="/Bilder/Welcher_Esser.svg"
+                                alt="Was für ein Esser bist du?"
+                                className="w-full h-auto max-w-sm mx-auto animate-fade-in-up"
                             />
+                            <p className="text-lg leading-relaxed text-vansol-text/80 mt-4 px-2">
+                                Finde heraus, was dich bisher am Abnehmen gehindert hat und wie du es endlich ändern kannst.
+                            </p>
                         </div>
-                        <h1 className="mb-6">
-                            <img src="/Bilder/Welcher_Esser.svg" alt="WAS FÜR EIN ESSER BIST DU?" className="w-full max-w-2xl mx-auto p-2" style={{ padding: '10px' }} />
-                        </h1>
-                        <p className="text-lg sm:text-xl mb-8 text-stone-600 max-w-xl mx-auto leading-relaxed">
-                            Finde heraus, was dich bisher am Abnehmen gehindert hat und wie du es endlich ändern kannst.
-                        </p>
-                        <button onClick={() => {
-                            setAnswers({});
-                            localStorage.removeItem('vansol_funnel_state_v2');
-                            changeStep(1);
-                        }} className="bg-vansol-dark text-white px-10 py-5 rounded-full text-lg uppercase tracking-widest font-semibold hover:bg-opacity-90 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
-                            Jetzt Analyse starten
-                        </button>
-                        <p className="mt-6 text-sm text-stone-500 flex items-center justify-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-vansol-green"></span>
-                            Dauert nur 2 Minuten
-                        </p>
+
+                        <div className="relative w-full max-w-sm flex justify-center items-center py-8 mb-8">
+                            <div className="absolute inset-0 bg-vansol-green/5 rounded-full scale-110 blur-2xl"></div>
+                            <div className="relative z-10 w-64 h-64 md:w-80 md:h-80 rounded-full border-4 border-white/50 shadow-2xl overflow-hidden">
+                                <img
+                                    src="/Bilder/Katrin%20Notitzblock.jpg"
+                                    alt="Katrin van Sol"
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="w-full max-w-md pb-10 px-4">
+                            <button onClick={() => {
+                                setAnswers({});
+                                localStorage.removeItem('vansol_funnel_state_v2');
+                                changeStep(1);
+                            }} className="w-full bg-vansol-green text-white py-5 rounded-full font-semibold text-lg tracking-wide shadow-xl active:scale-95 transition-transform flex items-center justify-center group hover:bg-opacity-90">
+                                JETZT ANALYSE STARTEN
+                                <span className="material-icons ml-2 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                            </button>
+                            <p className="text-center mt-4 text-xs text-vansol-text/50">
+                                Dauer der Analyse: ca. 2 Minuten
+                            </p>
+                        </div>
                     </div>
                 )}
 
                 {/* 1-10. Questions */}
-                {step >= 1 && step <= 10 && (
-                    <div className="flex flex-col justify-center flex-grow py-4 animate-fade-in-up">
+                {step >= 1 && step <= 11 && (
+                    <div className="flex flex-col flex-grow py-4 animate-fade-in-up">
 
-                        <h2 className="font-serif text-2xl sm:text-3xl mb-8 text-center px-4 max-w-3xl mx-auto">{questionsData.find(q => q.id === step).question}</h2>
+                        <div className="mb-8 px-2">
+                            <span className="inline-block px-3 py-1 bg-white/60 backdrop-blur-sm rounded-full text-[12px] font-semibold text-vansol-green mb-4 shadow-sm border border-white">
+                                {questionsData.find(q => q.id === step).category}
+                            </span>
+                            <h2 className="font-serif text-2xl sm:text-3xl leading-[1.3] text-vansol-dark font-medium">
+                                {questionsData.find(q => q.id === step).question}
+                            </h2>
+                        </div>
 
                         {questionsData.find(q => q.id === step).type === 'card' ? (
-                            <div className="space-y-4">
-                                {questionsData.find(q => q.id === step).options.map(opt => (
-                                    <Card
-                                        key={opt.id}
-                                        selected={answers[step] === opt.id}
-                                        onClick={() => handleAnswer(opt.id)}
-                                    >
-                                        {opt.text}
-                                    </Card>
-                                ))}
+                            <div className="space-y-4 flex-grow flex flex-col">
+                                <div className="space-y-4">
+                                    {questionsData.find(q => q.id === step).options.map(opt => (
+                                        <Card
+                                            key={opt.id}
+                                            selected={
+                                                Array.isArray(answers[step])
+                                                    ? answers[step].includes(opt.id)
+                                                    : answers[step] === opt.id
+                                            }
+                                            onClick={() => handleAnswer(opt.id)}
+                                        >
+                                            {opt.text}
+                                        </Card>
+                                    ))}
+                                </div>
+                                {questionsData.find(q => q.id === step).multi && (
+                                    <div className="mt-8 text-center">
+                                        <button
+                                            onClick={handleNext}
+                                            disabled={!answers[step] || answers[step].length === 0}
+                                            className="w-full bg-vansol-green text-white py-4 rounded-xl font-semibold tracking-wide shadow-lg hover:bg-opacity-90 transition-all flex items-center justify-center group disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            Weiter
+                                            <span className="material-icons ml-2 text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         ) : (
-                            <div className="py-4">
+                            <div className="py-4 flex-grow flex flex-col justify-center">
                                 <Slider
                                     config={questionsData.find(q => q.id === step).config}
                                     value={answers[step]}
                                     onChange={handleAnswer}
                                 />
                                 <div className="mt-12 text-center">
-                                    <button onClick={handleNext} className="bg-vansol-dark text-white px-12 py-4 uppercase tracking-widest shadow-lg hover:bg-opacity-90 transition-all">
+                                    <button onClick={handleNext} className="w-full bg-vansol-green text-white py-4 rounded-xl font-semibold tracking-wide shadow-lg hover:bg-opacity-90 transition-all flex items-center justify-center group">
                                         Weiter
+                                        <span className="material-icons ml-2 text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
                                     </button>
                                 </div>
                             </div>
                         )}
+
+
                     </div>
                 )}
 
                 {/* 11. Gauge Animation */}
-                {step === 11 && (
-                    <GaugeAnimation onComplete={() => changeStep(12)} />
+                {step === 12 && (
+                    <GaugeAnimation onComplete={() => changeStep(13)} />
                 )}
 
                 {/* 12. Contact Form */}
-                {step === 12 && (
+                {step === 13 && (
                     <div className="pt-8 pb-12 animate-fade-in-up">
                         <div className="max-w-lg mx-auto">
 
@@ -739,7 +848,7 @@ const App = () => {
                                     <div className="pt-4">
                                         <button
                                             type="submit"
-                                            className="group relative w-full bg-vansol-dark text-white py-5 rounded-lg uppercase tracking-widest font-bold text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none overflow-hidden"
+                                            className="group relative w-full bg-vansol-green text-white py-5 rounded-lg uppercase tracking-widest font-bold text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none overflow-hidden"
                                             disabled={!formData.consent || !isValidEmail(formData.email)}
                                         >
                                             <span className="relative z-10 flex items-center justify-center">
@@ -791,7 +900,7 @@ const App = () => {
                 )}
 
                 {/* 13. Thank You */}
-                {step === 13 && (
+                {step === 14 && (
                     <div className="text-center pt-10 px-4">
 
                         <h1 className="mb-6">
@@ -830,6 +939,13 @@ const App = () => {
                 )}
 
             </div>
+
+            {/* Static Footer Wrapper - Outside of animated container */}
+            {step >= 1 && step <= 11 && (
+                <div className="pb-6 w-full">
+                    <QuizFooter />
+                </div>
+            )}
         </div>
     );
 };
