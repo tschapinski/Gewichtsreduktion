@@ -15,10 +15,10 @@ const questionsData = [
         category: "Einstieg",
         question: "Bevor wir anfangen: Was tut dir im Alltag besonders gut?",
         options: [
-            { id: 'A', text: "Zeit für mich alleine (Ruhe) 🧘‍♀️" },
-            { id: 'B', text: "Bewegung an der frischen Luft 🌲" },
-            { id: 'C', text: "Gesellige Runden mit Freunden ☕" },
-            { id: 'D', text: "Kreativ sein oder Neues lernen 🎨" }
+            { id: 'A', text: "🧘‍♀️ Zeit für mich alleine (Ruhe)" },
+            { id: 'B', text: "🌲 Bewegung an der frischen Luft" },
+            { id: 'C', text: "☕ Gesellige Runden mit Freunden" },
+            { id: 'D', text: "🎨 Kreativ sein oder Neues lernen" }
         ],
     },
     {
@@ -244,7 +244,7 @@ const Card = ({ selected, onClick, children }) => {
         >
             <span className="text-lg font-medium leading-tight pr-4 text-vansol-text">{children}</span>
             <div className={`
-                w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors
+                w-6 h-6 min-w-[24px] rounded-full border-2 flex items-center justify-center transition-colors flex-shrink-0
                 ${selected ? 'border-vansol-green' : 'border-vansol-beige'}
             `}>
                 <div className={`
@@ -374,6 +374,41 @@ const App = () => {
 
     // Refs for animations
     const containerRef = useRef(null);
+    const welcomeRefs = useRef([]);
+
+    // Start Screen Animation
+    useEffect(() => {
+        if (step === 0) {
+            // Initial set to ensure they are hidden
+            gsap.set(welcomeRefs.current, { opacity: 0, y: 20, scale: 0.95 });
+
+            const tl = gsap.timeline({ delay: 1.4 });
+
+            tl.to(welcomeRefs.current[0], {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 1.2,
+                ease: "power3.out"
+            })
+                .to(welcomeRefs.current[1], {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 1.2,
+                    ease: "power3.out"
+                }, "-=0.8")
+                .to(welcomeRefs.current[2], {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 1,
+                    ease: "power3.out"
+                }, "-=0.8");
+
+            return () => tl.kill();
+        }
+    }, [step]);
 
     // Auto-Save
     useEffect(() => {
@@ -617,19 +652,19 @@ const App = () => {
 
                 {/* 0. Welcome */}
                 {step === 0 && (
-                    <div className="pt-8 animate-fade-in-up flex flex-col items-center">
-                        <div className="text-center mb-6 max-w-md w-full px-4">
+                    <div className="pt-8 flex flex-col items-center">
+                        <div ref={el => welcomeRefs.current[0] = el} className="opacity-0 text-center mb-6 w-full max-w-xl px-4">
                             <img
                                 src="/Bilder/Welcher_Esser.svg"
                                 alt="Was für ein Esser bist du?"
-                                className="w-full h-auto max-w-sm mx-auto animate-fade-in-up"
+                                className="w-full h-auto max-w-[500px] mx-auto "
                             />
-                            <p className="text-lg leading-relaxed text-vansol-text/80 mt-4 px-2">
+                            <p className="text-lg leading-relaxed text-vansol-text/80 mt-4 px-2 max-w-md mx-auto">
                                 Finde heraus, was dich bisher am Abnehmen gehindert hat und wie du es endlich ändern kannst.
                             </p>
                         </div>
 
-                        <div className="relative w-full max-w-sm flex justify-center items-center py-8 mb-8">
+                        <div ref={el => welcomeRefs.current[1] = el} className="opacity-0 relative w-full max-w-sm flex justify-center items-center py-8 mb-8">
                             <div className="absolute inset-0 bg-vansol-green/5 rounded-full scale-110 blur-2xl"></div>
                             <div className="relative z-10 w-64 h-64 md:w-80 md:h-80 rounded-full border-4 border-white/50 shadow-2xl overflow-hidden">
                                 <img
@@ -640,7 +675,7 @@ const App = () => {
                             </div>
                         </div>
 
-                        <div className="w-full max-w-md pb-10 px-4">
+                        <div ref={el => welcomeRefs.current[2] = el} className="opacity-0 w-full max-w-md pb-10 px-4">
                             <button onClick={() => {
                                 setAnswers({});
                                 localStorage.removeItem('vansol_funnel_state_v2');
@@ -727,12 +762,12 @@ const App = () => {
                 {/* 12. Contact Form */}
                 {step === 13 && (
                     <div className="pt-8 pb-12 animate-fade-in-up">
-                        <div className="max-w-lg mx-auto">
+                        <div className="w-full max-w-3xl mx-auto">
 
                             {/* Headline & Copy */}
                             <div className="text-center mb-10 px-4">
                                 <h2 className="mb-6">
-                                    <img src="/Bilder/Dein_Ergebnis.svg" alt="DEIN ERGEBNIS WARTET AUF DICH!" className="w-full max-w-2xl mx-auto p-2" style={{ padding: '10px' }} />
+                                    <img src="/Bilder/Dein_Ergebnis.svg" alt="DEIN ERGEBNIS WARTET AUF DICH!" className="w-full max-w-[800px] mx-auto p-2" style={{ padding: '10px' }} />
                                 </h2>
                                 <p className="text-base md:text-lg text-stone-600 leading-relaxed max-w-md mx-auto">
                                     Du bist nur noch einen Schritt entfernt von deiner individuellen Analyse.
@@ -743,7 +778,7 @@ const App = () => {
                             </div>
 
                             {/* Premium Form Card */}
-                            <div className="bg-white px-6 md:px-10 py-10 shadow-soft rounded-sm">
+                            <div className="bg-white px-6 md:px-10 py-10 shadow-soft rounded-sm max-w-lg mx-auto">
                                 <form onSubmit={handleContactSubmit} className="space-y-6">
 
                                     {/* Vorname */}
