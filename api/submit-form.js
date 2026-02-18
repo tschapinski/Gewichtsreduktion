@@ -94,6 +94,12 @@ export default async function handler(req, res) {
                 return res.status(500).json({ error: 'Failed to update existing member', detail: updateError.message });
             }
         }
-        res.status(500).json({ error: 'Failed to subscribe user', detail: e.message });
+
+        // Extract more detailed error info if available
+        const errorDetail = e.response && e.response.body
+            ? JSON.stringify(e.response.body)
+            : e.message;
+
+        res.status(500).json({ error: 'Failed to subscribe user', detail: errorDetail });
     }
 }
