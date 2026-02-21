@@ -23,6 +23,13 @@ const questionsData = [
     },
     {
         id: 2,
+        type: 'input',
+        category: "Dein Wunsch",
+        question: "Stell dir vor du hast einen Wunsch bei einer guten Fee frei. Was würdest du dir Wünschen?",
+        placeholder: "Mein größter Wunsch ist ...",
+    },
+    {
+        id: 3,
         type: 'slider',
         category: "Erfahrung",
         question: "Wie viele Diäten hast du in deinem Leben schon ausprobiert?",
@@ -40,7 +47,7 @@ const questionsData = [
         },
     },
     {
-        id: 3,
+        id: 4,
         type: 'card',
         category: "Dein Ziel",
         question: "Was ist dein Zielgewicht, das du verlieren möchtest?",
@@ -52,7 +59,7 @@ const questionsData = [
         ],
     },
     {
-        id: 4,
+        id: 5,
         type: 'card',
         category: "Emotionales Essen",
         question: "Wann greifst du am häufigsten zu Essen, obwohl du keinen körperlichen Hunger hast? (Mehrfachauswahl möglich)",
@@ -66,7 +73,7 @@ const questionsData = [
         ],
     },
     {
-        id: 5,
+        id: 6,
         type: 'slider',
         category: "Sättigung",
         question: "Wie würdest du dein Sättigungsgefühl beschreiben?",
@@ -83,7 +90,7 @@ const questionsData = [
         },
     },
     {
-        id: 6,
+        id: 7,
         type: 'card',
         category: "Heisshunger",
         question: "Welche Aussage trifft am ehesten auf deine Beziehung zu Süßigkeiten/Snacks zu? (Mehrfachauswahl möglich)",
@@ -97,7 +104,7 @@ const questionsData = [
         ],
     },
     {
-        id: 7,
+        id: 8,
         type: 'card',
         category: "Selbstbild",
         question: "Wie behandelst du deinen Körper aktuell? (Ehrlich sein!)",
@@ -109,7 +116,7 @@ const questionsData = [
         ],
     },
     {
-        id: 8,
+        id: 9,
         type: 'card',
         category: "Ursache",
         question: "Was glaubst du, ist der Hauptgrund für dein Übergewicht?",
@@ -120,7 +127,7 @@ const questionsData = [
         ],
     },
     {
-        id: 9,
+        id: 10,
         type: 'slider',
         category: "Mindset",
         question: "Glaubst du, dass dein Unterbewusstsein stärker ist als dein bewusster Wille?",
@@ -137,7 +144,7 @@ const questionsData = [
         },
     },
     {
-        id: 10,
+        id: 11,
         type: 'card',
         category: "Motivation",
         question: "Bist du bereit, dich auf eine tiefe Entspannung einzulassen?",
@@ -148,15 +155,34 @@ const questionsData = [
         ],
     },
     {
-        id: 11,
-        type: 'card',
+        id: 12,
+        type: 'slider',
         category: "Vision",
-        question: "Stell dir vor, du hättest dein Ziel bereits erreicht. Wie fühlst du dich?",
-        options: [
-            { id: 'A', text: "Frei und erleichtert" },
-            { id: 'B', text: "Stolz und selbstbewusst" },
-            { id: 'C', text: "Energetischer und gesünder" }
-        ],
+        question: "Um wieviel Prozent würde sich dein Leben verbessern wenn du keine Heißhunger-Attacken mehr hättest?",
+        config: {
+            min: 0,
+            max: 100,
+            step: 1,
+            isPercent: true,
+            labels: [
+                { range: [0, 9], text: "Kaum", icon: "🥱" },
+                { range: [10, 19], text: "Minimal", icon: "🫤" },
+                { range: [20, 29], text: "Ein wenig", icon: "😐" },
+                { range: [30, 39], text: "Etwas", icon: "🙂" },
+                { range: [40, 49], text: "Spürbar", icon: "😊" },
+                { range: [50, 59], text: "Deutlich", icon: "😌" },
+                { range: [60, 69], text: "Bedeutend", icon: "😄" },
+                { range: [70, 79], text: "Sehr", icon: "😁" },
+                { range: [80, 89], text: "Extrem", icon: "😍" },
+                { range: [90, 100], text: "Lebensverändernd", icon: "🤩" }
+            ]
+        },
+    },
+    {
+        id: 13,
+        type: 'wish-reveal',
+        category: "Deine Zukunft",
+        question: "Und weißt du, was das Beste ist?",
     }
 ];
 
@@ -347,10 +373,10 @@ const QuizHeader = ({ step, onBack }) => (
             <div className="w-full h-1.5 bg-vansol-green/20 rounded-full overflow-hidden">
                 <div
                     className="h-full bg-vansol-green rounded-full transition-all duration-500 ease-out"
-                    style={{ width: `${(step / 11) * 100}%` }}
+                    style={{ width: `${(step / 13) * 100}%` }}
                 ></div>
             </div>
-            <p className="text-center text-[10px] uppercase tracking-widest mt-2 font-bold text-vansol-green/80">Schritt {step} von 11</p>
+            <p className="text-center text-[10px] uppercase tracking-widest mt-2 font-bold text-vansol-green/80">Schritt {step} von 13</p>
         </div>
         <div className="w-10"></div> {/* Spacer */}
     </header>
@@ -424,7 +450,7 @@ const App = () => {
         if (saved) {
             try {
                 const p = JSON.parse(saved);
-                if (p.step && p.step < 12) setStep(p.step);
+                if (p.step && p.step < 14) setStep(p.step);
                 if (p.answers) setAnswers(p.answers);
                 if (p.formData) setFormData(p.formData);
             } catch (e) { }
@@ -472,17 +498,17 @@ const App = () => {
 
         setAnswers(newAnswers);
 
-        // Auto-advance only for single-select cards
+        // Auto-advance only for single-select cards (not input/wish-reveal)
         if (currentQ.type === 'card' && !currentQ.multi) {
             setTimeout(() => {
-                if (step < 11) changeStep(step + 1);
+                if (step < 13) changeStep(step + 1);
                 else finishQuestions(newAnswers);
             }, 400);
         }
     };
 
     const handleNext = () => {
-        if (step < 11) changeStep(step + 1);
+        if (step < 13) changeStep(step + 1);
         else finishQuestions(answers);
     };
 
@@ -497,41 +523,38 @@ const App = () => {
             return ans === val;
         };
 
-        // Map Sliders
-        // Q2: 0, 1, 2, 3, 4
-        // Q5: 1-10
-        // Q9: 0-100
+        // Map Sliders – question IDs shifted +1 due to new Q2 (input)
+        // Q3: 0-4 (Diäten), Q6: 1-10 (Sättigung), Q10: 0-100 (Mindset)
 
-        // Existing logic + Slider Mapping
-        // Typ A (Emotional): 4C, 4E, 6A, 6D, 7B, 8C, Q5(4-7)
-        if (hasAnswer(4, 'C')) scores.A++;
-        if (hasAnswer(4, 'E')) scores.A++;
-        if (hasAnswer(6, 'A')) scores.A++;
-        if (hasAnswer(6, 'D')) scores.A++; // Reward/end of day -> Emotional/Habit
-        if (hasAnswer(7, 'B')) scores.A++;
-        if (hasAnswer(7, 'D')) scores.A++; // Critical self-image -> Emotional
-        if (hasAnswer(8, 'C')) scores.A++;
-        if (finalAnswers[5] >= 4 && finalAnswers[5] <= 7) scores.A++;
+        // Typ A (Emotional): Q5C, Q5E, Q7A, Q7D, Q8B, Q8D, Q9C, Q6(4-7)
+        if (hasAnswer(5, 'C')) scores.A++;
+        if (hasAnswer(5, 'E')) scores.A++;
+        if (hasAnswer(7, 'A')) scores.A++;
+        if (hasAnswer(7, 'D')) scores.A++; // Reward/end of day -> Emotional/Habit
+        if (hasAnswer(8, 'B')) scores.A++;
+        if (hasAnswer(8, 'D')) scores.A++; // Critical self-image -> Emotional
+        if (hasAnswer(9, 'C')) scores.A++;
+        if (finalAnswers[6] >= 4 && finalAnswers[6] <= 7) scores.A++;
 
-        // Typ B (Gewohnheit): 4B, 4E, 6E, 7C, 8A
-        if (hasAnswer(4, 'B')) scores.B++;
-        if (hasAnswer(4, 'E')) scores.B++;
-        if (hasAnswer(6, 'E')) scores.B++; // Difficulty passing by -> Habit/Impulse
-        if (hasAnswer(7, 'C')) scores.B++;
-        if (hasAnswer(8, 'A')) scores.B++;
-        if (finalAnswers[2] <= 1) scores.B++;
+        // Typ B (Gewohnheit): Q5B, Q5E, Q7E, Q8C, Q9A, Q3(<=1)
+        if (hasAnswer(5, 'B')) scores.B++;
+        if (hasAnswer(5, 'E')) scores.B++;
+        if (hasAnswer(7, 'E')) scores.B++; // Difficulty passing by -> Habit/Impulse
+        if (hasAnswer(8, 'C')) scores.B++;
+        if (hasAnswer(9, 'A')) scores.B++;
+        if (finalAnswers[3] <= 1) scores.B++;
 
-        // Typ C (Volumen): 3C, 4D, 6C
-        if (hasAnswer(3, 'C')) scores.C++;
-        if (hasAnswer(4, 'D')) scores.C++;
-        if (hasAnswer(6, 'C')) scores.C++;
-        if (finalAnswers[5] >= 8) scores.C++;
+        // Typ C (Volumen): Q4C, Q5D, Q7C, Q6(>=8)
+        if (hasAnswer(4, 'C')) scores.C++;
+        if (hasAnswer(5, 'D')) scores.C++;
+        if (hasAnswer(7, 'C')) scores.C++;
+        if (finalAnswers[6] >= 8) scores.C++;
 
-        // Typ D (Stress): 4A, 6A, 7C
-        if (hasAnswer(4, 'A')) scores.D++;
-        if (hasAnswer(6, 'A')) scores.D++;
-        if (hasAnswer(7, 'C')) scores.D++;
-        if (finalAnswers[9] >= 71) scores.D++;
+        // Typ D (Stress): Q5A, Q7A, Q8C, Q10(>=71)
+        if (hasAnswer(5, 'A')) scores.D++;
+        if (hasAnswer(7, 'A')) scores.D++;
+        if (hasAnswer(8, 'C')) scores.D++;
+        if (finalAnswers[10] >= 71) scores.D++;
 
         const typeKey = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
 
@@ -542,7 +565,7 @@ const App = () => {
             'D': { title: "Der Stress-Esser", alias: "Der Getriebene" }
         };
 
-        const rec = (finalAnswers[3] === 'B' || finalAnswers[3] === 'C') ? "Hypnotisches Magenband" : "Hypnotischer Magenballon";
+        const rec = (finalAnswers[4] === 'B' || finalAnswers[4] === 'C') ? "Hypnotisches Magenband" : "Hypnotischer Magenballon";
 
         setResult({
             type: resultTypes[typeKey].title,
@@ -552,7 +575,7 @@ const App = () => {
             gaugeScore: Math.random() * 100 // Visual dummy score for gauge later if needed
         });
 
-        changeStep(12); // Gauge Animation
+        changeStep(14); // Gauge Animation
     };
 
     const handleContactSubmit = async (e) => {
@@ -595,7 +618,7 @@ const App = () => {
                 setTimeout(() => {
                     localStorage.removeItem('vansol_funnel_state_v2');
                 }, 500);
-                changeStep(14); // Thank You
+                changeStep(16); // Thank You
             } else {
                 console.error("Error:", data);
                 // Simple error handling for user
@@ -605,7 +628,7 @@ const App = () => {
                     // Still proceed to thank you page for better UX? Or show error?
                     // Usually in funnels, if they exist, we just treat it as success or update them.
                     // For now, let's treat "Member Exists" as a kind of success to the user but log it.
-                    changeStep(14);
+                    changeStep(16);
                     return;
                 }
                 alert(msg + " (" + (data.detail || data.error) + ")");
@@ -627,7 +650,8 @@ const App = () => {
     // Keyboard Nav
     useEffect(() => {
         const handleKey = (e) => {
-            if (e.key === 'Enter' && step > 0 && step <= 11 && questionsData.find(q => q.id === step).type === 'slider') handleNext();
+            const currentQ = questionsData.find(q => q.id === step);
+            if (e.key === 'Enter' && step > 0 && step <= 13 && currentQ && currentQ.type === 'slider') handleNext();
             if (e.key === 'Escape' && step > 1) changeStep(step - 1);
         };
         window.addEventListener('keydown', handleKey);
@@ -644,7 +668,7 @@ const App = () => {
         <div className="max-w-md md:max-w-2xl mx-auto min-h-screen relative flex flex-col font-sans">
 
             {/* Header / Progress - Not on Welcome/Thanks */}
-            {step > 0 && step < 12 && (
+            {step > 0 && step < 14 && (
                 <QuizHeader step={step} onBack={() => step > 1 && changeStep(step - 1)} />
             )}
 
@@ -691,76 +715,171 @@ const App = () => {
                     </div>
                 )}
 
-                {/* 1-10. Questions */}
-                {step >= 1 && step <= 11 && (
-                    <div className="flex flex-col flex-grow py-4 animate-fade-in-up">
+                {/* 1–13. Questions */}
+                {step >= 1 && step <= 13 && (() => {
+                    const currentQ = questionsData.find(q => q.id === step);
+                    if (!currentQ) return null;
 
-                        <div className="mb-8 px-2">
-                            <span className="inline-block px-3 py-1 bg-white/60 backdrop-blur-sm rounded-full text-[12px] font-semibold text-vansol-green mb-4 shadow-sm border border-white">
-                                {questionsData.find(q => q.id === step).category}
-                            </span>
-                            <h2 className="font-serif text-2xl sm:text-3xl leading-[1.3] text-vansol-dark font-medium">
-                                {questionsData.find(q => q.id === step).question}
-                            </h2>
-                        </div>
-
-                        {questionsData.find(q => q.id === step).type === 'card' ? (
-                            <div className="space-y-4 flex-grow flex flex-col">
-                                <div className="space-y-4">
-                                    {questionsData.find(q => q.id === step).options.map(opt => (
-                                        <Card
-                                            key={opt.id}
-                                            selected={
-                                                Array.isArray(answers[step])
-                                                    ? answers[step].includes(opt.id)
-                                                    : answers[step] === opt.id
-                                            }
-                                            onClick={() => handleAnswer(opt.id)}
-                                        >
-                                            {opt.text}
-                                        </Card>
-                                    ))}
+                    // --- Wish-Reveal Step (step 13) ---
+                    if (currentQ.type === 'wish-reveal') {
+                        const wishText = answers[2] || '...';
+                        return (
+                            <div className="flex flex-col flex-grow py-4">
+                                {/* Frage – sofort sichtbar, wie alle anderen Schritte */}
+                                <div className="mb-6 px-2 animate-fade-in-up">
+                                    <span className="inline-block px-3 py-1 bg-white/60 backdrop-blur-sm rounded-full text-[12px] font-semibold text-vansol-green mb-4 shadow-sm border border-white">
+                                        {currentQ.category}
+                                    </span>
+                                    <h2 className="font-serif text-2xl sm:text-3xl leading-[1.3] text-vansol-dark font-medium">
+                                        {currentQ.question}
+                                    </h2>
                                 </div>
-                                {questionsData.find(q => q.id === step).multi && (
-                                    <div className="mt-8 text-center">
+                                <div className="flex-grow flex flex-col justify-center">
+                                    {/* ✨ Fee mit Sternen – erscheint mit Antwort-Delay */}
+                                    <div className="animate-reveal-answer flex justify-center mb-6">
+                                        <div className="relative inline-flex items-center justify-center">
+                                            {/* Sterne rund um die Fee */}
+                                            <span className="fairy-star fairy-star-1">✦</span>
+                                            <span className="fairy-star fairy-star-2">✧</span>
+                                            <span className="fairy-star fairy-star-3">⋆</span>
+                                            <span className="fairy-star fairy-star-4">✦</span>
+                                            <span className="fairy-star fairy-star-5">✧</span>
+                                            <span className="fairy-star fairy-star-6">⋆</span>
+                                            {/* Fee – etwas größer als in Schritt 2 */}
+                                            <span className="fairy-float text-[4.5rem] leading-none select-none">🧚‍♀️</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Antwort – erscheint versetzt mit sanfter Animation */}
+                                    <div className="animate-reveal-answer bg-white rounded-2xl p-6 shadow-soft border-2 border-vansol-green/20 mb-8">
+                                        <p className="text-lg font-medium text-vansol-dark leading-relaxed text-center">
+                                            Und weißt du, was das Beste ist?{' '}
+                                            <br className="hidden sm:block" />
+                                            Dein Wunsch –{' '}
+                                            <span className="text-vansol-green font-semibold italic">„{wishText}"</span>
+                                            {' '}– könnte damit Realität werden.
+                                        </p>
+                                    </div>
+                                    {/* Button – erscheint nochmals versetzt */}
+                                    <button
+                                        onClick={() => finishQuestions(answers)}
+                                        className="animate-reveal-btn w-full bg-vansol-green text-white py-5 rounded-full font-semibold text-lg tracking-wide shadow-xl active:scale-95 transition-transform flex items-center justify-center group hover:bg-opacity-90"
+                                    >
+                                        Zum Testergebnis
+                                        <span className="material-icons ml-2 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }
+
+                    // --- Input Step (step 2) ---
+                    if (currentQ.type === 'input') {
+                        return (
+                            <div className="flex flex-col flex-grow py-4 animate-fade-in-up">
+                                <div className="mb-8 px-2">
+                                    <span className="inline-block px-3 py-1 bg-white/60 backdrop-blur-sm rounded-full text-[12px] font-semibold text-vansol-green mb-4 shadow-sm border border-white">
+                                        {currentQ.category}
+                                    </span>
+                                    <h2 className="font-serif text-2xl sm:text-3xl leading-[1.3] text-vansol-dark font-medium">
+                                        {currentQ.question}
+                                    </h2>
+                                </div>
+                                <div className="flex flex-col flex-grow">
+                                    <div className="flex-grow flex flex-col justify-center py-4">
+                                        <span className="text-5xl mb-6 block text-center">🧚‍♀️</span>
+                                        <textarea
+                                            rows={4}
+                                            placeholder={currentQ.placeholder}
+                                            className="w-full px-5 py-4 bg-white border-2 border-vansol-green/20 rounded-xl focus:border-vansol-green focus:ring-2 focus:ring-vansol-green focus:ring-opacity-20 focus:outline-none transition-all text-base resize-none shadow-soft font-medium text-vansol-dark placeholder-stone-300"
+                                            value={answers[step] || ''}
+                                            onChange={e => setAnswers({ ...answers, [step]: e.target.value })}
+                                            autoFocus
+                                        />
+                                    </div>
+                                    <div className="mt-4 text-center">
                                         <button
                                             onClick={handleNext}
-                                            disabled={!answers[step] || answers[step].length === 0}
+                                            disabled={!answers[step] || answers[step].trim().length === 0}
                                             className="w-full bg-vansol-green text-white py-4 rounded-xl font-semibold tracking-wide shadow-lg hover:bg-opacity-90 transition-all flex items-center justify-center group disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                             Weiter
                                             <span className="material-icons ml-2 text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
                                         </button>
                                     </div>
-                                )}
-                            </div>
-                        ) : (
-                            <div className="py-4 flex-grow flex flex-col justify-center">
-                                <Slider
-                                    config={questionsData.find(q => q.id === step).config}
-                                    value={answers[step]}
-                                    onChange={handleAnswer}
-                                />
-                                <div className="mt-12 text-center">
-                                    <button onClick={handleNext} className="w-full bg-vansol-green text-white py-4 rounded-xl font-semibold tracking-wide shadow-lg hover:bg-opacity-90 transition-all flex items-center justify-center group">
-                                        Weiter
-                                        <span className="material-icons ml-2 text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                                    </button>
                                 </div>
                             </div>
-                        )}
+                        );
+                    }
 
+                    // --- Card & Slider Steps ---
+                    return (
+                        <div className="flex flex-col flex-grow py-4 animate-fade-in-up">
+                            <div className="mb-8 px-2">
+                                <span className="inline-block px-3 py-1 bg-white/60 backdrop-blur-sm rounded-full text-[12px] font-semibold text-vansol-green mb-4 shadow-sm border border-white">
+                                    {currentQ.category}
+                                </span>
+                                <h2 className="font-serif text-2xl sm:text-3xl leading-[1.3] text-vansol-dark font-medium">
+                                    {currentQ.question}
+                                </h2>
+                            </div>
 
-                    </div>
+                            {currentQ.type === 'card' ? (
+                                <div className="space-y-4 flex-grow flex flex-col">
+                                    <div className="space-y-4">
+                                        {currentQ.options.map(opt => (
+                                            <Card
+                                                key={opt.id}
+                                                selected={
+                                                    Array.isArray(answers[step])
+                                                        ? answers[step].includes(opt.id)
+                                                        : answers[step] === opt.id
+                                                }
+                                                onClick={() => handleAnswer(opt.id)}
+                                            >
+                                                {opt.text}
+                                            </Card>
+                                        ))}
+                                    </div>
+                                    {currentQ.multi && (
+                                        <div className="mt-8 text-center">
+                                            <button
+                                                onClick={handleNext}
+                                                disabled={!answers[step] || answers[step].length === 0}
+                                                className="w-full bg-vansol-green text-white py-4 rounded-xl font-semibold tracking-wide shadow-lg hover:bg-opacity-90 transition-all flex items-center justify-center group disabled:opacity-50 disabled:cursor-not-allowed"
+                                            >
+                                                Weiter
+                                                <span className="material-icons ml-2 text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            ) : (
+                                <div className="py-4 flex-grow flex flex-col justify-center">
+                                    <Slider
+                                        config={currentQ.config}
+                                        value={answers[step]}
+                                        onChange={handleAnswer}
+                                    />
+                                    <div className="mt-12 text-center">
+                                        <button onClick={handleNext} className="w-full bg-vansol-green text-white py-4 rounded-xl font-semibold tracking-wide shadow-lg hover:bg-opacity-90 transition-all flex items-center justify-center group">
+                                            Weiter
+                                            <span className="material-icons ml-2 text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    );
+                })()}
+
+                {/* Gauge Animation */}
+                {step === 14 && (
+                    <GaugeAnimation onComplete={() => changeStep(15)} />
                 )}
 
-                {/* 11. Gauge Animation */}
-                {step === 12 && (
-                    <GaugeAnimation onComplete={() => changeStep(13)} />
-                )}
-
-                {/* 12. Contact Form */}
-                {step === 13 && (
+                {/* Contact Form */}
+                {step === 15 && (
                     <div className="pt-8 pb-12 animate-fade-in-up">
                         <div className="w-full max-w-3xl mx-auto">
 
@@ -930,8 +1049,8 @@ const App = () => {
                     </div>
                 )}
 
-                {/* 13. Thank You */}
-                {step === 14 && (
+                {/* Thank You */}
+                {step === 16 && (
                     <div className="text-center pt-10 px-4">
 
                         <h1 className="mb-6">
@@ -972,7 +1091,7 @@ const App = () => {
             </div>
 
             {/* Static Footer Wrapper - Outside of animated container */}
-            {step >= 1 && step <= 11 && (
+            {step >= 1 && step <= 13 && (
                 <div className="pb-6 w-full">
                     <QuizFooter />
                 </div>
