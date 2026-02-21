@@ -30,59 +30,56 @@ app.post('/api/submit-form', async (req, res) => {
     }
 
     try {
-        const response = await mailchimp.lists.addListMember(listId, {
+        // Compute MD5 hash of lowercase email (required by Mailchimp for upsert)
+        const subscriberHash = crypto.createHash('md5').update(email.toLowerCase()).digest('hex');
+
+        const tags = [
+            'website-lead',
+            'newsletter-opt-in',
+            'Welcher-Esser',
+            result?.type ? `type-${result.type.replace(/\s+/g, '-').toLowerCase()}` : 'unknown-type'
+        ];
+
+        const mergeFields = {
+            FNAME: firstName,
+            LNAME: lastName,
+            TYPE: result?.type || '',
+            ALIAS: result?.typeAlias || '',
+            PRODUCT: result?.productRecommendation || '',
+        };
+
+        // Use setListMember (PUT) – works for new, existing AND previously unsubscribed contacts.
+        // For unsubscribed contacts Mailchimp requires re-opt-in ('pending'), not 'subscribed'.
+        // status_if_new: 'subscribed' only applies to brand new contacts.
+        const response = await mailchimp.lists.setListMember(listId, subscriberHash, {
             email_address: email,
-            status: 'subscribed',
-            merge_fields: {
-                FNAME: firstName,
-                LNAME: lastName,
-                TYPE: result?.type || '',
-                ALIAS: result?.typeAlias || '',
-                PRODUCT: result?.productRecommendation || '',
-                // Map other necessary fields if they exist in Mailchimp
-                // WGOAL: answers[2] || '', // Example mapping
-            },
-            tags: ['website-lead', 'newsletter-opt-in', 'Welcher-Esser', result?.type ? `type-${result.type.replace(/\s+/g, '-').toLowerCase()}` : 'unknown-type']
+            status_if_new: 'subscribed', // For new contacts → direct subscribe
+            merge_fields: mergeFields,
         });
 
-        console.log(`Successfully added contact as an audience member. The contact's id is ${response.id}.`);
-        res.status(200).json({ success: true, message: 'Successfully subscribed to newsletter!', id: response.id });
+        console.log(`Upserted contact: ${email} | status: ${response.status}`);
+
+        // If Mailchimp returned 'unsubscribed', the contact had previously opted out.
+        // We cannot force-resubscribe them – instead set to 'pending' so they receive a re-opt-in email.
+        if (response.status === 'unsubscribed') {
+            await mailchimp.lists.updateListMember(listId, subscriberHash, {
+                status: 'pending',
+                merge_fields: mergeFields,
+            });
+            console.log(`Contact was unsubscribed – set to pending re-opt-in: ${email}`);
+        }
+
+        // Always update tags (separate endpoint)
+        await mailchimp.lists.updateListMemberTags(listId, subscriberHash, {
+            tags: tags.map(tag => ({ name: tag, status: 'active' }))
+        });
+
+        res.status(200).json({ success: true, message: 'Contact processed successfully!', status: response.status });
 
     } catch (e) {
         console.error("Error with Mailchimp:", e);
-        if (e.response && e.response.body && e.response.body.title === "Member Exists") {
-            console.log("Member already exists. Updating existing member...");
-            try {
-                const subscriberHash = crypto.createHash('md5').update(email.toLowerCase()).digest('hex');
-
-                // 1. Update Merge Fields & Status
-                await mailchimp.lists.updateListMember(listId, subscriberHash, {
-                    status: 'subscribed', // Ensure they are resubscribed if they were unsubscribed
-                    merge_fields: {
-                        FNAME: firstName,
-                        LNAME: lastName,
-                        TYPE: result?.type || '',
-                        ALIAS: result?.typeAlias || '',
-                        PRODUCT: result?.productRecommendation || '',
-                    }
-                });
-
-                // 2. Add Tags (Tags endpoint is separate for updates)
-                const tagsToAdd = ['website-lead', 'newsletter-opt-in', 'Welcher-Esser', result?.type ? `type-${result.type.replace(/\s+/g, '-').toLowerCase()}` : 'unknown-type'];
-
-                await mailchimp.lists.updateListMemberTags(listId, subscriberHash, {
-                    tags: tagsToAdd.map(tag => ({ name: tag, status: 'active' }))
-                });
-
-                console.log(`Successfully updated existing contact: ${email}`);
-                return res.status(200).json({ success: true, message: 'Successfully updated existing member!', updated: true });
-
-            } catch (updateError) {
-                console.error("Error updating existing member:", updateError);
-                return res.status(500).json({ error: 'Failed to update existing member', detail: updateError.message });
-            }
-        }
-        res.status(500).json({ error: 'Failed to subscribe user', detail: e.message });
+        const detail = e.response?.body?.detail || e.message || 'Unknown error';
+        res.status(500).json({ error: 'Failed to process contact', detail });
     }
 });
 
