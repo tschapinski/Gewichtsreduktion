@@ -132,14 +132,19 @@ input[type=range]:focus {
 }
 
 /* Gestaffelte Einblend-Animationen für Schritt 13 (Wunsch-Enthüllung) */
+.animate-reveal-fairy {
+    opacity: 0;
+    animation: fade-in-up 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.9s forwards;
+}
+
 .animate-reveal-answer {
     opacity: 0;
-    animation: fade-in-up 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards;
+    animation: fade-in-up 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 3.3s forwards;
 }
 
 .animate-reveal-btn {
     opacity: 0;
-    animation: fade-in-up 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.95s forwards;
+    animation: fade-in-up 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 4.5s forwards;
 }
 
 /* ✨ Fee & Sterne Animationen für Schritt 13 */
@@ -262,6 +267,29 @@ input[type=range]:focus {
 .fairy-float {
     animation: fairy-float 3s ease-in-out infinite;
     display: inline-block;
+}
+
+/* ==========================================================
+   ✨ FEE – Schritt 2 (Wunsch-Eingabe)
+   Erscheint verzögert nach 1.5s, danach normale Schwebung
+   ========================================================== */
+
+@keyframes fairy-appear {
+    0% {
+        opacity: 0;
+        transform: scale(0.7) translateY(15px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.animate-fairy-appear-delayed {
+    opacity: 0;
+    /* 1.5s Delay wie gewünscht, sanfter 1s fade in */
+    animation: fairy-appear 1s cubic-bezier(0.16, 1, 0.3, 1) 1.5s forwards;
 }
 
 .fairy-star {

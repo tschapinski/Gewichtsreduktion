@@ -736,7 +736,7 @@ const App = () => {
                                 </div>
                                 <div className="flex-grow flex flex-col justify-center">
                                     {/* ✨ Fee mit Sternen – erscheint mit Antwort-Delay */}
-                                    <div className="animate-reveal-answer flex justify-center mb-6">
+                                    <div className="animate-reveal-fairy flex justify-center mb-6">
                                         <div className="relative inline-flex items-center justify-center">
                                             {/* Sterne rund um die Fee */}
                                             <span className="fairy-star fairy-star-1">✦</span>
@@ -753,8 +753,6 @@ const App = () => {
                                     {/* Antwort – erscheint versetzt mit sanfter Animation */}
                                     <div className="animate-reveal-answer bg-white rounded-2xl p-6 shadow-soft border-2 border-vansol-green/20 mb-8">
                                         <p className="text-lg font-medium text-vansol-dark leading-relaxed text-center">
-                                            Und weißt du, was das Beste ist?{' '}
-                                            <br className="hidden sm:block" />
                                             Dein Wunsch –{' '}
                                             <span className="text-vansol-green font-semibold italic">„{wishText}"</span>
                                             {' '}– könnte damit Realität werden.
@@ -787,7 +785,19 @@ const App = () => {
                                 </div>
                                 <div className="flex flex-col flex-grow">
                                     <div className="flex-grow flex flex-col justify-center py-4">
-                                        <span className="text-5xl mb-6 block text-center">🧚‍♀️</span>
+                                        <div className="flex justify-center mb-6">
+                                            <div className="animate-fairy-appear-delayed relative inline-flex items-center justify-center">
+                                                {/* Sterne rund um die Fee */}
+                                                <span className="fairy-star fairy-star-1">✦</span>
+                                                <span className="fairy-star fairy-star-2">✧</span>
+                                                <span className="fairy-star fairy-star-3">⋆</span>
+                                                <span className="fairy-star fairy-star-4">✦</span>
+                                                <span className="fairy-star fairy-star-5">✧</span>
+                                                <span className="fairy-star fairy-star-6">⋆</span>
+                                                {/* Fee –  identisch zu Slide 13 */}
+                                                <span className="fairy-float text-[4.5rem] leading-none select-none">🧚‍♀️</span>
+                                            </div>
+                                        </div>
                                         <textarea
                                             rows={4}
                                             placeholder={currentQ.placeholder}
