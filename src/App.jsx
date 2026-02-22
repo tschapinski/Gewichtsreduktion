@@ -397,6 +397,7 @@ const App = () => {
     const [answers, setAnswers] = useState({});
     const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', consent: false });
     const [result, setResult] = useState(null);
+    const [isFulfillingWish, setIsFulfillingWish] = useState(false);
 
     // Refs for animations
     const containerRef = useRef(null);
@@ -746,7 +747,16 @@ const App = () => {
                                             <span className="fairy-star fairy-star-5">✧</span>
                                             <span className="fairy-star fairy-star-6">⋆</span>
                                             {/* Fee – etwas größer als in Schritt 2 */}
-                                            <span className="fairy-float text-[4.5rem] leading-none select-none">🧚‍♀️</span>
+                                            <span className={`text-[4.5rem] leading-none select-none ${isFulfillingWish ? 'animate-magic-wave' : 'fairy-float'}`}>🧚‍♀️</span>
+                                            {isFulfillingWish && (
+                                                <>
+                                                    <span className="absolute magic-star-burst magic-star-burst-1 text-[#f59e0b] text-2xl">✦</span>
+                                                    <span className="absolute magic-star-burst magic-star-burst-2 text-[#f59e0b] text-xl">✧</span>
+                                                    <span className="absolute magic-star-burst magic-star-burst-3 text-[#f59e0b] text-2xl">⋆</span>
+                                                    <span className="absolute magic-star-burst magic-star-burst-4 text-[#f59e0b] text-xl">✦</span>
+                                                    <span className="absolute magic-star-burst magic-star-burst-5 text-[#f59e0b] text-2xl">✧</span>
+                                                </>
+                                            )}
                                         </div>
                                     </div>
 
@@ -760,7 +770,13 @@ const App = () => {
                                     </div>
                                     {/* Button – erscheint nochmals versetzt */}
                                     <button
-                                        onClick={() => finishQuestions(answers)}
+                                        onClick={() => {
+                                            setIsFulfillingWish(true);
+                                            setTimeout(() => {
+                                                finishQuestions(answers);
+                                                setIsFulfillingWish(false);
+                                            }, 1200);
+                                        }}
                                         className="animate-reveal-btn w-full bg-vansol-green text-white py-5 rounded-full font-semibold text-lg tracking-wide shadow-xl active:scale-95 transition-transform flex items-center justify-center group hover:bg-opacity-90"
                                     >
                                         Zum Testergebnis

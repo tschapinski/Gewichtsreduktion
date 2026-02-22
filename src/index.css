@@ -322,6 +322,7 @@ input[type=range]:focus {
     animation: star-orbit-6 2.4s ease-in-out infinite 1.5s;
 }
 
+
 /* Pulse-slow für Gradient Circle */
 @keyframes pulse-slow {
 
