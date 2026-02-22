@@ -182,7 +182,7 @@ const questionsData = [
         id: 13,
         type: 'wish-reveal',
         category: "Deine Zukunft",
-        question: "Und weißt du, was das Beste ist?",
+        question: "Und weißt du, was das konkret für dich bedeutet?",
     }
 ];
 
