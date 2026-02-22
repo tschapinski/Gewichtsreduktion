@@ -318,7 +318,7 @@ const GaugeAnimation = ({ onComplete }) => {
             <img
                 src="/Bilder/Katrin%20Magenband.jpg"
                 alt="Magenband Visualisierung"
-                className="w-full max-w-xs mb-8 rounded-lg shadow-soft"
+                className="w-full max-w-xs mb-8 rounded-lg shadow-soft animate-premium-fade"
             />
             <div className="relative w-64 h-32 overflow-hidden mb-8">
                 {/* Gauge Arc Background */}
@@ -382,13 +382,7 @@ const QuizHeader = ({ step, onBack }) => (
     </header>
 );
 
-const QuizFooter = () => (
-    <div className="mt-12 text-center px-4 opacity-70 hover:opacity-100 transition-opacity duration-500">
-        <div className="flex justify-center mb-4">
-            <img src="/Bilder/Vansol_logo_dark.svg" alt="Vansol" className="h-6 w-auto" />
-        </div>
-    </div>
-);
+const QuizFooter = () => null;
 
 // --- Main Logic & App ---
 
@@ -409,7 +403,7 @@ const App = () => {
             // Initial set to ensure they are hidden
             gsap.set(welcomeRefs.current, { opacity: 0, y: 20, scale: 0.95 });
 
-            const tl = gsap.timeline({ delay: 1.4 });
+            const tl = gsap.timeline();
 
             tl.to(welcomeRefs.current[0], {
                 opacity: 1,
@@ -437,26 +431,6 @@ const App = () => {
         }
     }, [step]);
 
-    // Auto-Save
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            localStorage.setItem('vansol_funnel_state_v2', JSON.stringify({ answers, step, formData }));
-        }, 1000);
-        return () => clearTimeout(timeout);
-    }, [answers, step, formData]);
-
-    // Load State
-    useEffect(() => {
-        const saved = localStorage.getItem('vansol_funnel_state_v2');
-        if (saved) {
-            try {
-                const p = JSON.parse(saved);
-                if (p.step && p.step < 14) setStep(p.step);
-                if (p.answers) setAnswers(p.answers);
-                if (p.formData) setFormData(p.formData);
-            } catch (e) { }
-        }
-    }, []);
 
     // Transition Handling
     const changeStep = (newStep) => {
@@ -615,10 +589,7 @@ const App = () => {
 
             if (response.ok) {
                 console.log("Success:", data);
-                // Reset Form Status for next run
-                setTimeout(() => {
-                    localStorage.removeItem('vansol_funnel_state_v2');
-                }, 500);
+                // Go to Thank You
                 changeStep(16); // Thank You
             } else {
                 console.error("Error:", data);
@@ -703,7 +674,6 @@ const App = () => {
                         <div ref={el => welcomeRefs.current[2] = el} className="opacity-0 w-full max-w-md pb-10 px-4">
                             <button onClick={() => {
                                 setAnswers({});
-                                localStorage.removeItem('vansol_funnel_state_v2');
                                 changeStep(1);
                             }} className="w-full bg-vansol-green text-white py-5 rounded-full font-semibold text-lg tracking-wide shadow-xl active:scale-95 transition-transform flex items-center justify-center group hover:bg-opacity-90">
                                 JETZT ANALYSE STARTEN
@@ -915,10 +885,7 @@ const App = () => {
                                     <img src="/Bilder/Dein_Ergebnis.svg" alt="DEIN ERGEBNIS WARTET AUF DICH!" className="w-full max-w-[800px] mx-auto p-2" style={{ padding: '10px' }} />
                                 </h2>
                                 <p className="text-base md:text-lg text-stone-600 leading-relaxed max-w-md mx-auto">
-                                    Du bist nur noch einen Schritt entfernt von deiner individuellen Analyse.
-                                    Ich schicke dir dein Ergebnis direkt in dein Postfach –
-                                    inklusive meiner persönlichen Empfehlung, wie du endlich
-                                    dein Wunschgewicht erreichst.
+                                    Ich schicke dir dein Ergebnis direkt in dein Postfach.
                                 </p>
                             </div>
 

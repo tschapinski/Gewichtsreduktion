@@ -131,20 +131,40 @@ input[type=range]:focus {
     animation: fade-in-up 0.6s ease-out;
 }
 
+/* Premium Image Fade ohne Skalierung (verhindert Haken am Ende) */
+@keyframes premium-fade {
+    0% {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-premium-fade {
+    opacity: 0;
+    will-change: opacity, transform;
+    animation: premium-fade 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
 /* Gestaffelte Einblend-Animationen für Schritt 13 (Wunsch-Enthüllung) */
 .animate-reveal-fairy {
     opacity: 0;
-    animation: fade-in-up 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.9s forwards;
+    will-change: opacity, transform;
+    animation: premium-fade 1.2s cubic-bezier(0.22, 1, 0.36, 1) 1.3s forwards;
 }
 
 .animate-reveal-answer {
     opacity: 0;
-    animation: fade-in-up 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 3.3s forwards;
+    animation: fade-in-up 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 2.7s forwards;
 }
 
 .animate-reveal-btn {
     opacity: 0;
-    animation: fade-in-up 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 4.5s forwards;
+    animation: fade-in-up 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 3.9s forwards;
 }
 
 /* ✨ Fee & Sterne Animationen für Schritt 13 */
