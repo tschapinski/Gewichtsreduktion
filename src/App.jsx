@@ -25,7 +25,7 @@ const questionsData = [
         id: 2,
         type: 'input',
         category: "Dein Wunsch",
-        question: "Stell dir vor du hast einen Wunsch bei einer guten Fee frei. Was würdest du dir Wünschen?",
+        question: "Stell dir vor, eine gute Fee erscheint und fragt dich: Was wünschst du dir für deinen Körper, wenn alles möglich wäre?",
         placeholder: "Mein größter Wunsch ist ...",
     },
     {
