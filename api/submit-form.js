@@ -41,6 +41,12 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
+    // Extract the fairy-wish answer from Question 2 (free-text input).
+    // Trimmed + truncated to 250 chars to stay under Mailchimp's 255-char text-field limit.
+    const wish = answers && answers[2]
+        ? String(answers[2]).trim().slice(0, 250)
+        : '';
+
     try {
         // Compute MD5 hash of lowercase email (required by Mailchimp for upsert)
         const subscriberHash = crypto.createHash('md5').update(email.toLowerCase()).digest('hex');
@@ -58,6 +64,7 @@ export default async function handler(req, res) {
             TYPE: result?.type || '',
             ALIAS: result?.typeAlias || '',
             PRODUCT: result?.productRecommendation || '',
+            WISH: wish,
         };
 
         // Use setListMember (PUT) – works for new, existing AND previously unsubscribed contacts.
